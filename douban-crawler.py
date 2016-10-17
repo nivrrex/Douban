@@ -81,7 +81,6 @@ def get_douban_movies_now():
 
 
 if __name__ == "__main__":
-    
     #获取最新的豆瓣电影评价
     #movies = get_douban_movies_now()
     #for v in movies :
@@ -102,19 +101,9 @@ if __name__ == "__main__":
         tag_link = pyq(element).attr('href')
         url = "https://book.douban.com" + tag_link
         print(tag,tag_link,url)
-        
-        #测试用
-        #tag = "编程"
-        #url = 'https://book.douban.com/tag/{0}'.format(tag)
-        #i = 1
 
         book = {}
         while True:
-            #测试用
-            #i = i + 1
-            #if i > 3:
-            #    break
-            
             #获取页面中book信息
             book,next_link = get_page_book_info(url,book)
             if next_link != None:
@@ -122,6 +111,7 @@ if __name__ == "__main__":
             else:
                 break
             time.sleep(0.8)
+
         #写入文件
         for index in book:
             ws.append([book[index]["Index"], book[index]["Tag"], book[index]["Title"], book[index]["Title Info"], book[index]["Link"], \
@@ -131,5 +121,3 @@ if __name__ == "__main__":
 
         print("\n")
         time.sleep(1.2)
-
-    
