@@ -92,8 +92,6 @@ if __name__ == "__main__":
     html = pyq(url)
 
     #book的hash数据写入文件，写入标题头
-    print("Start to write file ...")
-    sys.stdout.flush()
     wb = openpyxl.Workbook()
     ws = wb.active
     ws.append(["Index","Tag","Title","Title Info","Link","Picture","PUB","Rating","Pinglun","Info","Buy Info"])
@@ -128,12 +126,10 @@ if __name__ == "__main__":
         for index in book:
             ws.append([book[index]["Index"], book[index]["Tag"], book[index]["Title"], book[index]["Title Info"], book[index]["Link"], \
             book[index]["Picture"], book[index]["PUB"], book[index]["Rating"], book[index]["Pinglun"], book[index]["Info"], book[index]["Buy Info"]])
+        #保存文件
+        wb.save("book_store.xlsx")
 
         print("\n")
         time.sleep(1.2)
-
-    #保存文件
-    wb.save("book_store.xlsx")
-    print("End to write file ...")
 
     
