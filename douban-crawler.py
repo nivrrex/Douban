@@ -7,16 +7,20 @@ import re
 import io, sys
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf8')
 
-
+url = "http://douban.com/tag/股票?start=20&type=T"
 
 def get_page_book_info(url,book):
     html = pyq(url)
     print('reading ...  {0}'.format(url))
     sys.stdout.flush()
-    
+
+    #获取url中的tag名称
     tag_split  = url.split("/")
     if tag_split != None:
         tag = tag_split[4]
+        if str.find(tag,"?"):
+            tag = tag.split("?")[0]
+            print(tag)
 
     #获取页面中图书信息
     for element in html('ul.subject-list li.subject-item'):
@@ -84,11 +88,17 @@ if __name__ == "__main__":
     #    print(movies[v]["Title"],movies[v]["Rating"])
 
     #获取所有豆瓣的所有tag下的书籍的相关资料
-
     url = "https://book.douban.com/tag/"
     html = pyq(url)
-    
 
+    #book的hash数据写入文件，写入标题头
+    print("Start to write file ...")
+    sys.stdout.flush()
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.append(["Index","Tag","Title","Title Info","Link","Picture","PUB","Rating","Pinglun","Info","Buy Info"])
+
+    #根据Tag页面信息获取所有tag,然后逐一抓取
     for element in html('div.grid-16-8 div.article div div table tbody tr td a'):
         tag = pyq(element).text()
         tag_link = pyq(element).attr('href')
@@ -104,28 +114,25 @@ if __name__ == "__main__":
         while True:
             #测试用
             #i = i + 1
-            #if i > 4:
+            #if i > 3:
             #    break
+            
+            #获取页面中book信息
             book,next_link = get_page_book_info(url,book)
             if next_link != None:
                 url = next_link
             else:
                 break
             time.sleep(0.8)
+        #写入文件
+        for index in book:
+            ws.append([book[index]["Index"], book[index]["Tag"], book[index]["Title"], book[index]["Title Info"], book[index]["Link"], \
+            book[index]["Picture"], book[index]["PUB"], book[index]["Rating"], book[index]["Pinglun"], book[index]["Info"], book[index]["Buy Info"]])
 
         print("\n")
         time.sleep(1.2)
 
-
-    print("Start to write file ...")
-    sys.stdout.flush()
-    #book的hash数据写入文件
-    wb = openpyxl.Workbook()
-    ws = wb.active
-    ws.append(["Index","Tag","Title","Title Info","Link","Picture","PUB","Rating","Pinglun","Info","Buy Info"])
-    for index in book:
-        ws.append([book[index]["Index"], book[index]["Tag"], book[index]["Title"], book[index]["Title Info"], book[index]["Link"], \
-        book[index]["Picture"], book[index]["PUB"], book[index]["Rating"], book[index]["Pinglun"], book[index]["Info"], book[index]["Buy Info"]])
+    #保存文件
     wb.save("book_store.xlsx")
     print("End to write file ...")
 
