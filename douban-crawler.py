@@ -117,7 +117,7 @@ if __name__ == "__main__":
             ws.append([book[index]["Index"], book[index]["Tag"], book[index]["Title"], book[index]["Title Info"], book[index]["Link"], \
             book[index]["Picture"], book[index]["PUB"], book[index]["Rating"], book[index]["Pinglun"], book[index]["Info"], book[index]["Buy Info"]])
         #保存文件
-        wb.save("book_store.xlsx")
+        wb.save("book_store_douban.xlsx")
 
         print("\n")
         time.sleep(1.2)

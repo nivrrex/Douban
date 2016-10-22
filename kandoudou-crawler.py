@@ -10,7 +10,8 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf8')
 
 def get_page_book_info(url,book):
     html = pyq(url)
-    
+    next_link = None
+
     print('reading ...  {0}\n'.format(url))
     sys.stdout.flush()
     
@@ -50,7 +51,10 @@ def get_page_book_info(url,book):
         if pyq(link).text() == '下一页':
             next_link = pyq(link).attr('href')
 
-    return book, next_link
+    if next_link != None:
+        return book, next_link
+    else:
+        return book, None
 
 
 if __name__ == "__main__":
