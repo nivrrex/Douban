@@ -61,7 +61,7 @@ if __name__ == "__main__":
     #book的hash数据写入文件，写入标题头
     wb = openpyxl.Workbook()
     ws = wb.active
-    ws.append(["Index","Name","Author","Tag","EXT","Link","Picture","点击数量","下载数量"])
+    ws.append(["Index","Name","Tag","Author","EXT","Link","Picture","点击数量","下载数量"])
     
     
     #获取所有看看豆的下的书籍的相关资料
